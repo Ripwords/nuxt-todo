@@ -6,9 +6,9 @@ export default defineNitroPlugin(async () => {
 
   const driver = mongoDriver({
     connectionString: config.mongoDB,
-    collectionName: "todos",
+    collectionName: "auth",
     databaseName: "nuxt_todo"
   })
 
-  storage.mount('mongo:todos', driver)
+  storage.mount('mongo:auth', driver)
 })

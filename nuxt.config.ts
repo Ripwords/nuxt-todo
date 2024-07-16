@@ -9,6 +9,9 @@ export default defineNuxtConfig({
       enabled: true 
     } 
   },
+  runtimeConfig: {
+    mongoDB: import.meta.env.MONGODB_URI
+  },
   experimental: { typedPages: true },
   future: {
     compatibilityVersion: 4,

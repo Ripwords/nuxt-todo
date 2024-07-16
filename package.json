@@ -16,11 +16,13 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.1",
     "@primevue/themes": "^4.0.0",
-    "@vercel/kv": "^2.0.0",
+    "mongodb": "^6.8.0",
     "nuxt": "^3.12.3",
     "nuxt-auth-utils": "^0.2.0",
+    "oslo": "^1.2.1",
     "unstorage": "^1.10.2",
-    "vue": "latest"
+    "vue": "latest",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.0.0"
