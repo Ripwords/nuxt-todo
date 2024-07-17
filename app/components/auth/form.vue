@@ -18,7 +18,7 @@ const confirmPassword = defineModel<string>("confirmPassword", {
 </script>
 
 <template>
-  <Card>
+  <Card class="w-[30rem]">
     <template v-if="!signUp" #title>Authentication</template>
     <template v-else #title>Sign Up</template>
 
