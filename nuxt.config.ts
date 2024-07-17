@@ -36,11 +36,12 @@ export default defineNuxtConfig({
     nitro: {
       storage: {
         ["mongo:todos"]: {
-          driver: "memory",
+          driver: "fs",
+          base: "./db/todos",
         },
         ["mongo:auth"]: {
           driver: "fs",
-          base: "./db",
+          base: "./db/auth",
         },
       },
     },

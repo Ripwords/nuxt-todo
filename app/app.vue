@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+import "primeicons/primeicons.css";
+</script>
+
 <template>
   <div>
     <Toast />
