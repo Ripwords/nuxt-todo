@@ -9,8 +9,21 @@ export default defineNuxtConfig({
       enabled: true 
     } 
   },
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
+    },
+  },
   runtimeConfig: {
-    mongoDB: import.meta.env.MONGODB_URI
+    mongoDB: import.meta.env.MONGODB_URI,
+    session: {
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      }
+    }
   },
   experimental: { typedPages: true },
   future: {
@@ -28,6 +41,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/eslint",
     "@primevue/nuxt-module",
-    "@nuxtjs/tailwindcss"
+    "@nuxtjs/tailwindcss",
+    "nuxt-security"
   ]
 })

@@ -1,5 +1,8 @@
 import { z } from "zod"
 import { Bcrypt } from "oslo/password";
+import { alphabet, generateRandomString } from "oslo/crypto";
+import type { UserStoredData } from "#auth-utils";
+import { userExists } from "~~/server/utils/auth/utils";
 
 const bodySchema = z.object({
   email: z.string().email(),
@@ -13,8 +16,8 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse)
   const db = useStorage("mongo:auth")
   // Check if email exists in database
-  const userExist = await db.hasItem(body.email)
-  if (userExist) {
+   const userData = await userExists(body.email)
+  if (userData) {
     setResponseStatus(event, 400)
     return {
       message: "User already exists"
@@ -23,18 +26,20 @@ export default defineEventHandler(async (event) => {
 
   // If user does not exist, create a new user
   const bcrypt = new Bcrypt()
+  const uuid = generateRandomString(32, alphabet("-", "0-9", "A-Z", "a-z"))
   
-  const session = await setUserSession(event, {
-    user: {
-      email: body.email,
+  await setUserSession(event, {
+      user: {
+        uuid,
+        email: body.email
+      },
       loggedInAt: new Date()
-    },
   })
   
-  await db.setItem(body.email, JSON.stringify({
+  await db.setItem<UserStoredData>(uuid, {
+    email: body.email,
     password: await bcrypt.hash(body.password + process.env.NUXT_SESSION_PASSWORD),
-    session
-  }))
+  })
 
   setResponseStatus(event, 201)
   return {
