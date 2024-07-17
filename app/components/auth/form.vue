@@ -1,0 +1,81 @@
+<script lang="ts" setup>
+withDefaults(
+  defineProps<{
+    register?: boolean;
+  }>(),
+  {
+    register: false,
+  }
+);
+
+const email = defineModel<string>("email", { required: true });
+const password = defineModel<string>("password", { required: true });
+const confirmPassword = defineModel<string>("confirmPassword", {
+  required: false,
+});
+</script>
+
+<template>
+  <Card>
+    <template v-if="!signUp" #title>Authentication</template>
+    <template v-else #title>Sign Up</template>
+
+    <template #content>
+      <form>
+        <div class="flex justify-between items-center gap-3 mb-3">
+          <label for="email" class="font-semibold w-6rem">Email</label>
+          <InputText
+            id="email"
+            v-model="email"
+            autocomplete="email"
+            type="email"
+          />
+        </div>
+        <div class="flex justify-between items-center gap-3 mb-5">
+          <label for="password" class="font-semibold w-6rem">Password</label>
+          <Password
+            v-model="password"
+            :feedback="register"
+            :input-props="{
+              autocomplete: register ? 'new-password' : 'current-password',
+            }"
+          />
+        </div>
+        <div
+          v-if="register"
+          class="flex justify-between items-center gap-3 mb-5"
+        >
+          <label for="password" class="font-semibold w-6rem"
+            >Confirm Password</label
+          >
+          <Password
+            v-model="confirmPassword"
+            :feedback="false"
+            :input-props="{ autocomplete: 'new-password' }"
+          />
+        </div>
+      </form>
+
+      <div class="flex justify-between items-center gap-2">
+        <NuxtLink v-if="register" to="/auth/signin">
+          Already have an account? Sign In
+        </NuxtLink>
+        <NuxtLink v-else to="/auth/signup">
+          Don't have an account? Sign Up
+        </NuxtLink>
+        <Button
+          v-if="register"
+          type="button"
+          label="Sign Up"
+          @click="signUp(email, password, confirmPassword!)"
+        />
+        <Button
+          v-else
+          type="button"
+          label="Sign In"
+          @click="signIn(email, password)"
+        />
+      </div>
+    </template>
+  </Card>
+</template>
