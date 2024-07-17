@@ -21,6 +21,7 @@
     "nuxt-auth-utils": "^0.2.0",
     "nuxt-security": "^2.0.0-rc.9",
     "oslo": "^1.2.1",
+    "primevue": "^4.0.0",
     "unstorage": "^1.10.2",
     "vue": "latest",
     "zod": "^3.23.8"
