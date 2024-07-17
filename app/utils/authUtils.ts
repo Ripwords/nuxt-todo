@@ -66,15 +66,13 @@ export const signIn = async (email: string, password: string) => {
 export const signOut = async () => {
   const toast = usePvToast()
   const router = useRouter()
-  const { fetch } = useUserSession()
+  const { clear } = useUserSession()
 
   try {
     await $fetch("/api/auth/signout", {
       method: "POST"
     })
-    await fetch()
 
-    router.push("/auth/signin")
     toast.add({
       life: 3000,
       summary: "Success",
@@ -89,11 +87,15 @@ export const signOut = async () => {
       severity: "error"
     })
   }
+
+  await clear()
+  router.push("/auth/signin")
 }
 
 export const me = async () => {
   const toast = usePvToast()
-  const { fetch, user } = useUserSession()
+  const router = useRouter()
+  const { fetch, user, clear } = useUserSession()
 
   try {
     await $fetch("/api/user/me")
@@ -107,6 +109,8 @@ export const me = async () => {
     })
   }
   catch (e) {
+    await clear()
+    router.push("/auth/signin")
     toast.add({
       life: 3000,
       summary: "Error",
