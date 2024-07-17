@@ -8,6 +8,8 @@ withDefaults(
   }
 );
 
+const loading = ref(false);
+
 const email = defineModel<string>("email", { required: true });
 const password = defineModel<string>("password", { required: true });
 const confirmPassword = defineModel<string>("confirmPassword", {
@@ -67,13 +69,27 @@ const confirmPassword = defineModel<string>("confirmPassword", {
           v-if="register"
           type="button"
           label="Sign Up"
-          @click="signUp(email, password, confirmPassword!)"
+          :loading
+          @click="
+            async () => {
+              loading = true;
+              await signUp(email, password, confirmPassword!);
+              loading = false;
+            }
+          "
         />
         <Button
           v-else
           type="button"
           label="Sign In"
-          @click="signIn(email, password)"
+          :loading
+          @click="
+            async () => {
+              loading = true;
+              await signIn(email, password);
+              loading = false;
+            }
+          "
         />
       </div>
     </template>
