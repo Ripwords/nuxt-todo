@@ -1,8 +1,7 @@
-// todos.d.ts
 declare module '#todos' {
   interface Todo {
+    id: number
     date: Date
     description: string
-    completed: boolean
   }
 }

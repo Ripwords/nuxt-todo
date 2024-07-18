@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
   const todoKeys = await db.getKeys()
   const userTodos = todoKeys.filter((key) => key.includes(uuid))
   const todos = await Promise.all(userTodos.map((key) => db.getItem<Todo>(key)))
-
   return {
     todos
   }

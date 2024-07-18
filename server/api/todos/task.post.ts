@@ -2,17 +2,15 @@ import type { Todo } from "#todos"
 import { z } from "zod"
 
 const bodySchema = z.object({
-  uuid: z.string(),
-  todos: z.array(z.object({
-    date: z.coerce.date(),
-    description: z.string(),
-    completed: z.boolean()
-  }))
+  date: z.coerce.date(),
+  description: z.string(),
 })
 
 export default defineEventHandler(async (event) => {
-  await requireUserSession(event)
-  const { uuid } = await readValidatedBody(event, bodySchema.parse)
+  const session = await requireUserSession(event)
+  const uuid = session.user.uuid
+
+  const { date, description } = await readValidatedBody(event, bodySchema.parse)
   const db = useStorage("mongo:todos")
 
   const todoKeys = await db.getKeys()
@@ -24,14 +22,13 @@ export default defineEventHandler(async (event) => {
     return id > acc ? id : acc
   }, 0)
 
-  // Create new todos
   await db.setItem<Todo>(`${uuid}:${maxId + 1}`, {
-    date: new Date(),
-    description: "New todo",
-    completed: false
+    id: maxId + 1,
+    date,
+    description,
   })
 
   return {
-    message: "Todo added"
+    message: "Todos added"
   }
 })
