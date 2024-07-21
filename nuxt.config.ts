@@ -14,6 +14,9 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+  nitro: {
+    preset: "vercel-edge",
+  },
   // Configure server sessions
   runtimeConfig: {
     session: {
