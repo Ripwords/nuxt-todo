@@ -17,3 +17,9 @@ export const userExists = async (email: string): Promise<UserData | undefined> =
 
   return userData
 }
+
+export const getUser = async (uuid: string) => {
+   // Get user's data
+   const user = await useStorage("mongo:auth").getItem<UserStoredData>(uuid);
+   return user;
+}

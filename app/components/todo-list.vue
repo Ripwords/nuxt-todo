@@ -11,7 +11,6 @@ const addTask = async () => {
   await $fetch("/api/todos/task", {
     method: "POST",
     body: JSON.stringify({
-      date: new Date(),
       description: description.value,
     }),
   });
@@ -41,11 +40,7 @@ const completeTask = async (index: number) => {
 <template>
   <div>
     <div class="flex justify-center">
-      <DataTable
-        class="mt-3"
-        table-style="min-width: 40rem"
-        :value="data?.todos"
-      >
+      <DataTable class="mt-3" table-style="min-width: 40rem" :value="data">
         <Column field="id" header="No." />
         <Column field="date" header="Date">
           <template #body="slotProps">

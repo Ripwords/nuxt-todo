@@ -57,7 +57,7 @@ watchDebounced(
       >Write your new task</span
     >
     <div class="flex items-center gap-4 mb-4">
-      <InputText v-model="description" class="w-full" />
+      <InputText v-model="description" class="w-full" autofocus />
     </div>
     <div class="flex justify-end gap-2">
       <Button
