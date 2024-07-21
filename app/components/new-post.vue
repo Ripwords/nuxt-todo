@@ -29,15 +29,21 @@ const post = async () => {
   }
 };
 
-watch(enter!, () => {
-  if (visible.value) {
-    if (description.value == "") {
-      emptyDesc();
-    } else {
-      post();
+watchDebounced(
+  enter!,
+  () => {
+    if (visible.value) {
+      if (description.value == "") {
+        emptyDesc();
+      } else {
+        post();
+      }
     }
+  },
+  {
+    debounce: 250,
   }
-});
+);
 </script>
 
 <template>
