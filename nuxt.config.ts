@@ -27,9 +27,9 @@ export default defineNuxtConfig({
   },
   app: {
     pageTransition: {
-      name: 'page',
-      mode: 'out-in'
-    }
+      name: "page",
+      mode: "out-in",
+    },
   },
   // Local DB
   $development: {
@@ -87,5 +87,6 @@ export default defineNuxtConfig({
     "@primevue/nuxt-module",
     "@nuxtjs/tailwindcss",
     "nuxt-security",
+    "@vueuse/nuxt",
   ],
 });

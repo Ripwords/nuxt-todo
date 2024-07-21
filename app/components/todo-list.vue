@@ -3,7 +3,9 @@ const { data, refresh } = useFetch("/api/todos/task", {
   method: "GET",
 });
 
+const toast = usePvToast();
 const description = ref("");
+const showPostModal = ref(false);
 
 const addTask = async () => {
   await $fetch("/api/todos/task", {
@@ -14,6 +16,15 @@ const addTask = async () => {
     }),
   });
   await refresh();
+  description.value = "";
+  showPostModal.value = false;
+
+  toast.add({
+    severity: "success",
+    summary: "Success",
+    detail: "Task added successfully",
+    life: 2000,
+  });
 };
 
 const completeTask = async (index: number) => {
@@ -32,7 +43,7 @@ const completeTask = async (index: number) => {
     <div class="flex justify-center">
       <DataTable
         class="mt-3"
-        table-style="min-width: 50rem"
+        table-style="min-width: 40rem"
         :value="data?.todos"
       >
         <Column field="id" header="No." />
@@ -42,7 +53,7 @@ const completeTask = async (index: number) => {
           </template>
         </Column>
         <Column field="description" header="Desc." />
-        <Column field="completed" header="Completed">
+        <Column field="action" header="Action">
           <template #body="slotProps">
             <Button
               icon="pi pi-check"
@@ -53,7 +64,12 @@ const completeTask = async (index: number) => {
       </DataTable>
     </div>
     <div class="fixed right-5 bottom-5">
-      <Button icon="pi pi-plus" rounded @click="addTask" />
+      <Button icon="pi pi-plus" rounded @click="showPostModal = true" />
     </div>
+    <NewPost
+      v-model:description="description"
+      v-model:visible="showPostModal"
+      @post="addTask"
+    />
   </div>
 </template>
