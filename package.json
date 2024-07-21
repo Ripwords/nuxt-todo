@@ -16,6 +16,8 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.1",
     "@primevue/themes": "^4.0.0",
+    "@vueuse/core": "^10.11.0",
+    "@vueuse/nuxt": "^10.11.0",
     "mongodb": "^6.8.0",
     "nuxt": "^3.12.4",
     "nuxt-auth-utils": "^0.2.0",
