@@ -24,12 +24,12 @@
     "nuxt-security": "^2.0.0-rc.9",
     "oslo": "^1.2.1",
     "primeicons": "^7.0.0",
-    "primevue": "^4.0.0",
+    "primevue": "4.0.0-rc.3",
     "unstorage": "^1.10.2",
     "vue": "latest",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@primevue/nuxt-module": "^4.0.0"
+    "@primevue/nuxt-module": "4.0.0-rc.3"
   }
 }
