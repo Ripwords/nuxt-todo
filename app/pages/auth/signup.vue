@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+definePageMeta({
+  middleware: ["auto-login"],
+});
+
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
