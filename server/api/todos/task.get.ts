@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   // Decrypt user's private key
   const [iv, encrypted_private_key] = user.data_priv_key.split("|");
   const key = scryptSync(
-    process.env.PRIV_KEY_PASSWORD as string,
+    process.env.PRIV_KEY_PASSWORD + user.password,
     Buffer.from(user.priv_key_salt, "hex"),
     32
   );
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
   const priv_key = createPrivateKey({
     key: decryptedPrivateKey,
     type: "pkcs8",
-    passphrase: process.env.DATA_SALT,
+    passphrase: user.password,
   });
 
   const todoKeys = await db.getKeys();

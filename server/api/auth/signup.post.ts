@@ -35,6 +35,9 @@ export default defineEventHandler(async (event) => {
   // If user does not exist, create a new user
   const bcrypt = new Bcrypt();
   const uuid = generateRandomString(32, alphabet("-", "0-9", "A-Z", "a-z"));
+  const hashedPassword = await bcrypt.hash(
+    body.password + process.env.NUXT_SESSION_PASSWORD
+  );
 
   await setUserSession(event, {
     user: {
@@ -54,23 +57,25 @@ export default defineEventHandler(async (event) => {
       type: "pkcs8",
       format: "pem",
       cipher: "aes-256-cbc",
-      passphrase: process.env.DATA_SALT,
+      passphrase: hashedPassword,
     },
   });
 
   // Encrypt private key
   const salt = randomBytes(32);
   const iv = randomBytes(16);
-  const key = scryptSync(process.env.PRIV_KEY_PASSWORD as string, salt, 32);
+  const key = scryptSync(
+    process.env.PRIV_KEY_PASSWORD + hashedPassword,
+    salt,
+    32
+  );
   const cipher = createCipheriv("aes-256-cbc", key, iv);
   let encryptedPrivateKey = cipher.update(privateKey, "utf-8", "base64");
   encryptedPrivateKey += cipher.final("base64");
 
   await db.setItem<UserStoredData>(uuid, {
     email: body.email,
-    password: await bcrypt.hash(
-      body.password + process.env.NUXT_SESSION_PASSWORD
-    ),
+    password: hashedPassword,
     priv_key_salt: salt.toString("hex"),
     data_pub_key: publicKey,
     data_priv_key: `${iv.toString("hex")}|${encryptedPrivateKey}`,
