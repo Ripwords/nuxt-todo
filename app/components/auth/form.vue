@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-withDefaults(
+const props = withDefaults(
   defineProps<{
     register?: boolean;
   }>(),
@@ -8,13 +8,59 @@ withDefaults(
   }
 );
 
+const { enter } = useMagicKeys();
 const loading = ref(false);
+const toast = usePvToast();
 
 const email = defineModel<string>("email", { required: true });
 const password = defineModel<string>("password", { required: true });
 const confirmPassword = defineModel<string>("confirmPassword", {
   required: false,
 });
+
+watchDebounced(
+  enter!,
+  () => {
+    if (props.register) {
+      if (
+        confirmPassword.value == "" ||
+        password.value == "" ||
+        email.value == ""
+      ) {
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Information is incomplete",
+          life: 2000,
+        });
+        return;
+      }
+
+      if (password.value != confirmPassword.value) {
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Passwords do not match",
+          life: 2000,
+        });
+        return;
+      }
+      signUp(email.value, password.value, confirmPassword.value!);
+    } else {
+      if (password.value == "" || email.value == "") {
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Information is incomplete",
+          life: 2000,
+        });
+        return;
+      }
+      signIn(email.value, password.value);
+    }
+  },
+  { debounce: 500 }
+);
 </script>
 
 <template>
@@ -56,42 +102,42 @@ const confirmPassword = defineModel<string>("confirmPassword", {
             :input-props="{ autocomplete: 'new-password' }"
           />
         </div>
-      </form>
 
-      <div class="flex justify-between items-center gap-2 text-sm">
-        <NuxtLink v-if="register" to="/auth/signin">
-          Already have an account? Sign In
-        </NuxtLink>
-        <NuxtLink v-else to="/auth/signup">
-          Don't have an account? Sign Up
-        </NuxtLink>
-        <Button
-          v-if="register"
-          type="button"
-          label="Sign Up"
-          :loading
-          @click="
-            async () => {
-              loading = true;
-              await signUp(email, password, confirmPassword!);
-              loading = false;
-            }
-          "
-        />
-        <Button
-          v-else
-          type="button"
-          label="Sign In"
-          :loading
-          @click="
-            async () => {
-              loading = true;
-              await signIn(email, password);
-              loading = false;
-            }
-          "
-        />
-      </div>
+        <div class="flex justify-between items-center gap-2 text-sm">
+          <NuxtLink v-if="register" to="/auth/signin">
+            Already have an account? Sign In
+          </NuxtLink>
+          <NuxtLink v-else to="/auth/signup">
+            Don't have an account? Sign Up
+          </NuxtLink>
+          <Button
+            v-if="register"
+            type="button"
+            label="Sign Up"
+            :loading
+            @click="
+              async () => {
+                loading = true;
+                await signUp(email, password, confirmPassword!);
+                loading = false;
+              }
+            "
+          />
+          <Button
+            v-else
+            type="button"
+            label="Sign In"
+            :loading
+            @click="
+              async () => {
+                loading = true;
+                await signIn(email, password);
+                loading = false;
+              }
+            "
+          />
+        </div>
+      </form>
     </template>
   </Card>
 </template>

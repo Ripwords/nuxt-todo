@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-import { breakpointsTailwind } from "@vueuse/core";
-
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const xs = breakpoints.smaller("sm");
-
 const { data, refresh } = useFetch("/api/todos/task", {
   method: "GET",
 });
@@ -45,23 +40,35 @@ const completeTask = async (index: number) => {
 <template>
   <div>
     <div class="flex justify-center">
-      <DataTable class="m-3 w-[100vw] max-w-[50rem]" :value="data">
-        <Column v-if="!xs" class="w-[3rem]" field="id" header="No." />
-        <Column v-if="!xs" class="w-[6rem]" field="date" header="Date">
-          <template #body="slotProps">
-            {{ new Date(slotProps.data.date).toLocaleDateString() }}
-          </template>
-        </Column>
-        <Column field="description" header="Desc." />
-        <Column class="w-[5rem]" field="action" header="Action">
-          <template #body="slotProps">
-            <Button
-              icon="pi pi-check"
-              @click="completeTask(slotProps.data.id)"
-            />
-          </template>
-        </Column>
-      </DataTable>
+      <DataView class="w-full" :value="data" data-key="id">
+        <template #list>
+          <div class="grid grid-cols-1 gap-2">
+            <TransitionGroup name="list" tag="Card">
+              <Card v-for="item in data" :key="item.id">
+                <template #subtitle>
+                  <div class="text-gray-500">
+                    {{ new Date(item.date).toLocaleDateString() }}
+                  </div>
+                </template>
+                <template #content>
+                  <div
+                    class="flex justify-between items-center p-2 shadow-md rounded-md gap-5"
+                  >
+                    <div class="break-words flex-grow min-w-0">
+                      {{ item.description }}
+                    </div>
+                    <Button
+                      class="flex-shrink-0 w-10 h-10"
+                      icon="pi pi-check"
+                      @click="completeTask(item.id)"
+                    />
+                  </div>
+                </template>
+              </Card>
+            </TransitionGroup>
+          </div>
+        </template>
+      </DataView>
     </div>
     <div class="fixed right-5 bottom-5">
       <Button icon="pi pi-plus" rounded @click="showPostModal = true" />
@@ -73,3 +80,23 @@ const completeTask = async (index: number) => {
     />
   </div>
 </template>
+
+<style scoped>
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: absolute;
+}
+</style>

@@ -82,7 +82,7 @@ export default defineNuxtConfig({
   },
   pwa: {
     devOptions: {
-      enabled: true,
+      // enabled: true,
       suppressWarnings: true,
     },
     pwaAssets: {
