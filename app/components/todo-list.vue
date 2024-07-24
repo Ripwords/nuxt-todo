@@ -45,7 +45,7 @@ const completeTask = async (index: number) => {
 <template>
   <div>
     <div class="flex justify-center">
-      <DataTable class="m-3 w-[100vw]" :value="data">
+      <DataTable class="m-3 w-[100vw] max-w-[50rem]" :value="data">
         <Column v-if="!xs" class="w-[3rem]" field="id" header="No." />
         <Column v-if="!xs" class="w-[6rem]" field="date" header="Date">
           <template #body="slotProps">

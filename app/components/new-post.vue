@@ -49,6 +49,7 @@ watchDebounced(
 <template>
   <Dialog
     v-model:visible="visible"
+    position="top"
     modal
     header="New Post"
     :style="{ width: '25rem' }"
