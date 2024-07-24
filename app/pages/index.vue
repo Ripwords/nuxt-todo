@@ -6,7 +6,7 @@ definePageMeta({
 
 <template>
   <div class="flex justify-center">
-    <Card class="max-w-[50rem] w-[70vw]">
+    <Card class="max-w-[50rem] w-[100vw] mx-3">
       <template #header>
         <Menubar>
           <template #start>Todos</template>

@@ -38,38 +38,29 @@ const completeTask = async (index: number) => {
 </script>
 
 <template>
-  <div>
-    <div class="flex justify-center">
-      <DataView class="w-full" :value="data" data-key="id">
-        <template #list>
-          <div class="grid grid-cols-1 gap-2">
-            <TransitionGroup name="list" tag="Card">
-              <Card v-for="item in data" :key="item.id">
-                <template #subtitle>
-                  <div class="text-gray-500">
-                    {{ new Date(item.date).toLocaleDateString() }}
-                  </div>
-                </template>
-                <template #content>
-                  <div
-                    class="flex justify-between items-center p-2 shadow-md rounded-md gap-5"
-                  >
-                    <div class="break-words flex-grow min-w-0">
-                      {{ item.description }}
-                    </div>
-                    <Button
-                      class="flex-shrink-0 w-10 h-10"
-                      icon="pi pi-check"
-                      @click="completeTask(item.id)"
-                    />
-                  </div>
-                </template>
-              </Card>
-            </TransitionGroup>
-          </div>
-        </template>
-      </DataView>
-    </div>
+  <div class="w-full">
+    <DataView :value="data" data-key="id">
+      <template #list>
+        <TransitionGroup name="list" tag="Fieldset">
+          <Fieldset
+            v-for="item in data"
+            :key="item.id"
+            :legend="new Date(item.date).toLocaleDateString()"
+          >
+            <div class="flex items-center justify-between">
+              <p class="break-words hyphens-auto pr-4">
+                {{ item.description }}
+              </p>
+              <Button
+                class="flex-shrink-0 w-10 h-10"
+                icon="pi pi-check"
+                @click="completeTask(item.id)"
+              />
+            </div>
+          </Fieldset>
+        </TransitionGroup>
+      </template>
+    </DataView>
     <div class="fixed right-5 bottom-5">
       <Button icon="pi pi-plus" rounded @click="showPostModal = true" />
     </div>
