@@ -40,6 +40,7 @@ const completeTask = async (index: number) => {
 <template>
   <div class="w-full">
     <DataView :value="data" data-key="id">
+      <template #empty> You have no tasks! </template>
       <template #list>
         <TransitionGroup name="list" tag="Fieldset">
           <Fieldset
