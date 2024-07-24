@@ -16,6 +16,7 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.1",
     "@primevue/themes": "^4.0.0",
+    "@vite-pwa/nuxt": "^0.9.1",
     "@vueuse/core": "^10.11.0",
     "@vueuse/nuxt": "^10.11.0",
     "mongodb": "^6.8.0",
@@ -30,6 +31,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@primevue/nuxt-module": "4.0.0-rc.3"
+    "@primevue/nuxt-module": "4.0.0-rc.3",
+    "@vite-pwa/assets-generator": "^0.2.4"
   }
 }

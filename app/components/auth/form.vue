@@ -18,7 +18,7 @@ const confirmPassword = defineModel<string>("confirmPassword", {
 </script>
 
 <template>
-  <Card class="w-[30rem]">
+  <Card class="w-[30rem] m-3">
     <template v-if="!signUp" #title>Authentication</template>
     <template v-else #title>Sign Up</template>
 
@@ -58,7 +58,7 @@ const confirmPassword = defineModel<string>("confirmPassword", {
         </div>
       </form>
 
-      <div class="flex justify-between items-center gap-2">
+      <div class="flex justify-between items-center gap-2 text-sm">
         <NuxtLink v-if="register" to="/auth/signin">
           Already have an account? Sign In
         </NuxtLink>

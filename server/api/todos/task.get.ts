@@ -15,9 +15,7 @@ export default defineEventHandler(async (event) => {
   const user = await getUser(uuid);
   if (!user) {
     setResponseStatus(event, 400);
-    return {
-      message: "User not found",
-    };
+    return [];
   }
 
   // Decrypt user's private key

@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import { breakpointsTailwind } from "@vueuse/core";
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const xs = breakpoints.smaller("sm");
+
 const { data, refresh } = useFetch("/api/todos/task", {
   method: "GET",
 });
@@ -40,15 +45,15 @@ const completeTask = async (index: number) => {
 <template>
   <div>
     <div class="flex justify-center">
-      <DataTable class="mt-3" table-style="min-width: 40rem" :value="data">
-        <Column field="id" header="No." />
-        <Column field="date" header="Date">
+      <DataTable class="m-3 w-[100vw]" :value="data">
+        <Column v-if="!xs" class="w-[3rem]" field="id" header="No." />
+        <Column v-if="!xs" class="w-[6rem]" field="date" header="Date">
           <template #body="slotProps">
             {{ new Date(slotProps.data.date).toLocaleDateString() }}
           </template>
         </Column>
         <Column field="description" header="Desc." />
-        <Column field="action" header="Action">
+        <Column class="w-[5rem]" field="action" header="Action">
           <template #body="slotProps">
             <Button
               icon="pi pi-check"

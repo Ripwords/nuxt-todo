@@ -80,6 +80,22 @@ export default defineNuxtConfig({
       },
     },
   },
+  pwa: {
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+    },
+    pwaAssets: {
+      config: true,
+    },
+    manifest: {
+      background_color: "#121212",
+      theme_color: "#121212",
+      description: "A Nuxt.js Todo App with authentication and data encryption",
+      name: "Nuxt Todo",
+      short_name: "Nuxt Todo",
+    },
+  },
   modules: [
     "nuxt-auth-utils",
     "@pinia/nuxt",
@@ -88,5 +104,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "nuxt-security",
     "@vueuse/nuxt",
+    "@vite-pwa/nuxt",
   ],
 });
