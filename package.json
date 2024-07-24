@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "generate-pwa-assets": "pwa-assets-generator"
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
