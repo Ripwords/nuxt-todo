@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import "primeicons/primeicons.css";
 import { breakpointsTailwind } from "@vueuse/core";
+import { SpeedInsights } from "@vercel/speed-insights/nuxt";
 
 useHead({
   htmlAttrs: {
@@ -30,6 +31,7 @@ const xs = breakpoints.smaller("sm");
 
 <template>
   <div>
+    <SpeedInsights />
     <div class="m-3">
       <Toast :position="xs ? 'bottom-center' : 'top-right'" />
     </div>
