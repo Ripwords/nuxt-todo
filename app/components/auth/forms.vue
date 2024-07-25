@@ -104,12 +104,16 @@ watchDebounced(
         </div>
 
         <div class="flex justify-between items-center gap-2 text-sm">
-          <NuxtLink v-if="register" to="/auth/signin">
-            Already have an account? Sign In
-          </NuxtLink>
-          <NuxtLink v-else to="/auth/signup">
-            Don't have an account? Sign Up
-          </NuxtLink>
+          <div>
+            <span v-if="register"> Have an account? </span>
+            <span v-else> Don't have an account? </span>
+            <NuxtLink
+              class="underline transition-colors delay-75 hover:text-[#10b981]"
+              :to="`/auth/${register ? 'signin' : 'signup'}`"
+            >
+              {{ register ? "Sign In" : "Sign Up" }}
+            </NuxtLink>
+          </div>
           <Button
             v-if="register"
             type="button"

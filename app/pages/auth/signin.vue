@@ -9,6 +9,6 @@ const password = ref("");
 
 <template>
   <div class="flex justify-center mt-3">
-    <AuthForm v-model:email="email" v-model:password="password" />
+    <AuthForms v-model:email="email" v-model:password="password" />
   </div>
 </template>

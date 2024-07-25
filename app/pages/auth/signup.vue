@@ -10,7 +10,7 @@ const confirmPassword = ref("");
 
 <template>
   <div class="flex justify-center mt-3">
-    <AuthForm
+    <AuthForms
       v-model:email="email"
       v-model:password="password"
       v-model:confirm-password="confirmPassword"
