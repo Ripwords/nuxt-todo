@@ -65,8 +65,10 @@ watchDebounced(
 
 <template>
   <Card class="w-[30rem] m-3">
-    <template v-if="!signUp" #title>Authentication</template>
-    <template v-else #title>Sign Up</template>
+    <template #title>
+      <span v-if="!register">Authentication</span>
+      <span v-else>Register</span>
+    </template>
 
     <template #content>
       <form>
