@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   const { description } = await readValidatedBody(event, bodySchema.parse);
   const db = useStorage("mongo:todos");
 
-  const todoKeys = await db.getKeys();
+  const todoKeys = await db.getKeys(uuid);
   const userTodos = todoKeys.filter((key) => key.includes(uuid));
 
   // Find max id of user's todos

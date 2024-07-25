@@ -39,10 +39,9 @@ export default defineEventHandler(async (event) => {
     passphrase: user.password,
   });
 
-  const todoKeys = await db.getKeys();
-  const userTodos = todoKeys.filter((key) => key.includes(uuid));
+  const todoKeys = await db.getKeys(uuid);
   const todosFromDB = await Promise.all(
-    userTodos.map((key) => db.getItem<Todo>(key))
+    todoKeys.map((key) => db.getItem<Todo>(key))
   );
   const todos: Todo[] = todosFromDB
     .filter((todo) => todo !== null)
