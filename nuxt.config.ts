@@ -65,6 +65,12 @@ export default defineNuxtConfig({
       },
     },
   },
+  site: {
+    url: "https://ripwords-nuxt-todo.vercel.app",
+    name: "Nuxt Todo",
+    description: "Nuxt Todo with authentication and data encryption!",
+    defaultLocale: "en", // not needed if you have @nuxtjs/i18n installed
+  },
   // Allow security module to work with Nuxt Devtools
   security: {
     headers: {
@@ -105,5 +111,6 @@ export default defineNuxtConfig({
     "nuxt-security",
     "@vueuse/nuxt",
     "@vite-pwa/nuxt",
+    "@nuxtjs/seo",
   ],
 });

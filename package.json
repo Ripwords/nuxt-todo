@@ -14,16 +14,17 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
+    "@nuxtjs/seo": "2.0.0-rc.16",
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "@pinia/nuxt": "^0.5.1",
-    "@primevue/themes": "^4.0.0",
+    "@pinia/nuxt": "^0.5.2",
+    "@primevue/themes": "^4.0.2",
     "@vercel/speed-insights": "^1.0.12",
     "@vite-pwa/nuxt": "^0.9.1",
     "@vueuse/core": "^10.11.0",
     "@vueuse/nuxt": "^10.11.0",
     "mongodb": "^6.8.0",
     "nuxt": "^3.12.4",
-    "nuxt-auth-utils": "^0.2.0",
+    "nuxt-auth-utils": "^0.2.1",
     "nuxt-security": "^2.0.0-rc.9",
     "oslo": "^1.2.1",
     "primeicons": "^7.0.0",
@@ -35,5 +36,6 @@
   "devDependencies": {
     "@primevue/nuxt-module": "4.0.0-rc.3",
     "@vite-pwa/assets-generator": "^0.2.4"
-  }
+  },
+  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
 }

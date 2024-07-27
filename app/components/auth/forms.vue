@@ -109,12 +109,12 @@ watchDebounced(
           <div>
             <span v-if="register"> Have an account? </span>
             <span v-else> Don't have an account? </span>
-            <NuxtLink
+            <SiteLink
               class="underline transition-colors delay-75 hover:text-[#10b981]"
               :to="`/auth/${register ? 'signin' : 'signup'}`"
             >
               {{ register ? "Sign In" : "Sign Up" }}
-            </NuxtLink>
+            </SiteLink>
           </div>
           <Button
             v-if="register"
