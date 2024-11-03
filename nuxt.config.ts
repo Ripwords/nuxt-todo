@@ -4,7 +4,14 @@ import Aura from "@primevue/themes/aura";
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   experimental: { typedPages: true },
-  // Enable nuxt 4 file structure
+  scalar: {
+    devtools: true,
+  },
+  nitro: {
+    experimental: {
+      openAPI: true,
+    },
+  },
   future: {
     compatibilityVersion: 4,
   },
@@ -14,8 +21,12 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
+  auth: {
+    webAuthn: true,
+  },
   // Configure server sessions
   runtimeConfig: {
+    tokenKey: process.env.NUXT_ENCRYPT_KEY,
     session: {
       maxAge: 60 * 60 * 24 * 7, // 1 week
       cookie: {
@@ -43,6 +54,10 @@ export default defineNuxtConfig({
           driver: "fs",
           base: "./db/auth",
         },
+        ["mongo:credentials"]: {
+          driver: "fs",
+          base: "./db/credentials",
+        },
       },
     },
   },
@@ -62,14 +77,14 @@ export default defineNuxtConfig({
           collectionName: "auth",
           databaseName: "nuxt_todo",
         },
+        ["mongo:credentials"]: {
+          driver: "mongodb",
+          connectionString: process.env.MONGODB_URI,
+          collectionName: "credentials",
+          databaseName: "nuxt_todo",
+        },
       },
     },
-  },
-  site: {
-    url: "https://ripwords-nuxt-todo.vercel.app",
-    name: "Nuxt Todo",
-    description: "Nuxt Todo with authentication and data encryption!",
-    defaultLocale: "en", // not needed if you have @nuxtjs/i18n installed
   },
   // Allow security module to work with Nuxt Devtools
   security: {
@@ -88,7 +103,6 @@ export default defineNuxtConfig({
   },
   pwa: {
     devOptions: {
-      // enabled: true,
       suppressWarnings: true,
     },
     pwaAssets: {
@@ -111,6 +125,6 @@ export default defineNuxtConfig({
     "nuxt-security",
     "@vueuse/nuxt",
     "@vite-pwa/nuxt",
-    "@nuxtjs/seo",
+    "@scalar/nuxt",
   ],
 });

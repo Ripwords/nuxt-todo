@@ -47,7 +47,7 @@ watchDebounced(
       }
       signUp(email.value, password.value, confirmPassword.value!);
     } else {
-      if (password.value == "" || email.value == "") {
+      if (email.value == "") {
         toast.add({
           severity: "error",
           summary: "Error",
@@ -56,7 +56,7 @@ watchDebounced(
         });
         return;
       }
-      signIn(email.value, password.value);
+      signIn(email.value);
     }
   },
   { debounce: 500 }
@@ -81,7 +81,10 @@ watchDebounced(
             type="email"
           />
         </div>
-        <div class="flex justify-between items-center gap-3 mb-5">
+        <div
+          v-if="register"
+          class="flex justify-between items-center gap-3 mb-5"
+        >
           <label for="password" class="font-semibold w-6rem">Password</label>
           <Password
             v-model="password"
@@ -109,12 +112,12 @@ watchDebounced(
           <div>
             <span v-if="register"> Have an account? </span>
             <span v-else> Don't have an account? </span>
-            <SiteLink
+            <NuxtLink
               class="underline transition-colors delay-75 hover:text-[#10b981]"
               :to="`/auth/${register ? 'signin' : 'signup'}`"
             >
               {{ register ? "Sign In" : "Sign Up" }}
-            </SiteLink>
+            </NuxtLink>
           </div>
           <Button
             v-if="register"
@@ -137,7 +140,7 @@ watchDebounced(
             @click="
               async () => {
                 loading = true;
-                await signIn(email, password);
+                await signIn(email);
                 loading = false;
               }
             "

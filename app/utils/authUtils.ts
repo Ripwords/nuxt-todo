@@ -1,121 +1,121 @@
-export const signUp = async (email: string, password: string, confirmPassword: string) => {
-  const toast = usePvToast()
-  const router = useRouter()
-  const { fetch } = useUserSession()
+const { register, authenticate } = useWebAuthn({
+  registerEndpoint: "/api/webauthn/register", // Default
+  authenticateEndpoint: "/api/webauthn/authenticate", // Default
+});
+
+export const signUp = async (
+  email: string,
+  password: string,
+  confirmPassword: string
+) => {
+  const toast = usePvToast();
+  const router = useRouter();
+  const { fetch } = useUserSession();
 
   try {
-    await $fetch("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password,
-        confirmPassword
-      })
-    })
-    await fetch()
+    await register({
+      userName: email,
+      password,
+      confirmPassword,
+    });
+    await fetch();
 
-    router.push("/")
+    router.push("/");
     toast.add({
       life: 3000,
       summary: "Success",
       detail: "You have been signed up",
-      severity: "success"
-    })
+      severity: "success",
+    });
   } catch (e) {
     toast.add({
       life: 3000,
       summary: "Error",
       detail: e,
-      severity: "error"
-    })
+      severity: "error",
+    });
+    router.push("/");
   }
-}
+};
 
-export const signIn = async (email: string, password: string) => {
-  const toast = usePvToast()
-  const router = useRouter()
-  const { fetch } = useUserSession()
+export const signIn = async (email: string) => {
+  const toast = usePvToast();
+  const router = useRouter();
+  const { fetch } = useUserSession();
 
   try {
-    await $fetch("/api/auth/signin", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password
-      })
-    })
-    await fetch()
+    await authenticate(email);
+    await fetch();
 
-    router.push("/")
+    router.push("/");
     toast.add({
       life: 3000,
       summary: "Success",
       detail: "You have been signed in",
-      severity: "success"
-    })
+      severity: "success",
+    });
   } catch (e) {
     toast.add({
       life: 3000,
       summary: "Error",
       detail: e,
-      severity: "error"
-    })
+      severity: "error",
+    });
   }
-}
+};
 
 export const signOut = async () => {
-  const toast = usePvToast()
-  const router = useRouter()
-  const { clear } = useUserSession()
+  const toast = usePvToast();
+  const router = useRouter();
+  const { clear } = useUserSession();
 
   try {
     await $fetch("/api/auth/signout", {
-      method: "POST"
-    })
+      method: "POST",
+    });
 
     toast.add({
       life: 3000,
       summary: "Success",
       detail: "You have been signed out",
-      severity: "success"
-    })
+      severity: "success",
+    });
   } catch (e) {
     toast.add({
       life: 3000,
       summary: "Error",
       detail: e,
-      severity: "error"
-    })
+      severity: "error",
+    });
   }
 
-  await clear()
-  router.push("/auth/signin")
-}
+  await clear();
+  router.push("/auth/signin");
+};
 
 export const me = async () => {
-  const toast = usePvToast()
-  const router = useRouter()
-  const { fetch, user, clear } = useUserSession()
+  const toast = usePvToast();
+  const router = useRouter();
+  const { fetch, user, clear } = useUserSession();
 
   try {
-    await $fetch("/api/user/me")
-    await fetch()
+    await $fetch("/api/user/me");
+    await fetch();
 
     toast.add({
       life: 3000,
       summary: "Success",
       detail: user.value?.email,
-      severity: "success"
-    })
-  }
-  catch (e) {
-    await clear()
-    router.push("/auth/signin")
+      severity: "success",
+    });
+  } catch (e) {
+    await clear();
+    router.push("/auth/signin");
     toast.add({
       life: 3000,
       summary: "Error",
       detail: e,
-      severity: "error"
-    })
+      severity: "error",
+    });
   }
-}
+};

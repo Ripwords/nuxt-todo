@@ -13,7 +13,7 @@ declare module "#auth-utils" {
 
   interface UserStoredData {
     email: string;
-    password: string;
+    password?: string;
     priv_key_salt: string;
     data_pub_key: string;
     data_priv_key: string;
@@ -22,6 +22,15 @@ declare module "#auth-utils" {
   interface UserData {
     uuid: string;
     data: UserStoredData;
+  }
+
+  interface CredentialData {
+    id: string;
+    uuid: string;
+    publicKey: string;
+    counter: number;
+    backedUp: boolean;
+    transports: string;
   }
 }
 

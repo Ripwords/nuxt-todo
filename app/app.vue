@@ -13,7 +13,7 @@ useHead({
       content: "O_EgarCL-e2t9YkVpBoH7NlMNRxHuc-B3bSabOP306Y",
     },
     {
-      name: "apple-mobile-web-app-capable",
+      name: "mobile-web-app-capable",
       content: "yes",
     },
     {

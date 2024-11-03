@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse);
   const db = useStorage("mongo:auth");
   // Check if email exists in database
-  const userData = await userExists(body.email);
+  const userData = await userExists(body.email, "auth");
   if (userData) {
     setResponseStatus(event, 400);
     return {
