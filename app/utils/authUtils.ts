@@ -50,8 +50,10 @@ export const signIn = async (email: string) => {
   try {
     await authenticate(email);
     await fetch();
+
+    router.push("/");
   } catch (e: any) {
-    if (e.statusCode === 400 && e.message === "Credential not found") {
+    if (e.statusCode === 400 && e.data.message === "Credential not found") {
       try {
         await registerExisting({
           userName: email,
@@ -65,10 +67,19 @@ export const signIn = async (email: string) => {
           severity: "error",
         });
       }
-    }
-  }
 
-  router.push("/");
+      await fetch();
+      router.push("/");
+    }
+
+    toast.add({
+      life: 3000,
+      summary: "User not found",
+      detail: "Please sign up",
+      severity: "error",
+    });
+    router.push("/auth/signup");
+  }
 };
 
 export const signOut = async () => {
