@@ -3,6 +3,10 @@ const { register, authenticate } = useWebAuthn({
   authenticateEndpoint: "/api/webauthn/authenticate", // Default
 });
 
+const { register: registerExisting } = useWebAuthn({
+  registerEndpoint: "/api/webauthn/register-existing",
+});
+
 export const signUp = async (
   email: string,
   password: string,
@@ -46,22 +50,25 @@ export const signIn = async (email: string) => {
   try {
     await authenticate(email);
     await fetch();
-
-    router.push("/");
-    toast.add({
-      life: 3000,
-      summary: "Success",
-      detail: "You have been signed in",
-      severity: "success",
-    });
-  } catch (e) {
-    toast.add({
-      life: 3000,
-      summary: "Error",
-      detail: e,
-      severity: "error",
-    });
+  } catch (e: any) {
+    if (e.statusCode === 400 && e.message === "Credential not found") {
+      try {
+        await registerExisting({
+          userName: email,
+        });
+        await fetch();
+      } catch (e: any) {
+        toast.add({
+          life: 3000,
+          summary: "Error",
+          detail: e,
+          severity: "error",
+        });
+      }
+    }
   }
+
+  router.push("/");
 };
 
 export const signOut = async () => {

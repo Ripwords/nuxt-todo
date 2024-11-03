@@ -5,7 +5,6 @@ export default defineWebAuthnRegisterEventHandler({
   validateUser: z.object({
     userName: z.string().email().trim(),
     password: z.string().min(6),
-    confirmPassword: z.string().min(6),
   }).parse,
   async onSuccess(event, { credential, user }) {
     const credDb = useStorage("mongo:credentials");
@@ -16,22 +15,20 @@ export default defineWebAuthnRegisterEventHandler({
       });
     }
 
-    const existingUser = await userExists(user.userName, "auth");
-    if (!existingUser) {
-      await $fetch("/api/auth/signup", {
-        method: "POST",
-        body: {
-          email: user.userName,
-          password: user.password,
-          confirmPassword: user.confirmPassword,
-        },
+    const userData = await userExists(user.userName, "auth");
+    if (!userData) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "User not found",
       });
     }
 
-    const userData = await userExists(user.userName, "auth");
-
-    if (!userData) {
-      throw createError({ statusCode: 400, message: "User not found" });
+    const existingCredential = await userExists(user.userName, "credentials");
+    if (existingCredential) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Credential already exists",
+      });
     }
 
     await credDb.setItem<CredentialData>(user.userName, {
