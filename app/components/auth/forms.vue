@@ -56,11 +56,59 @@ watchDebounced(
         });
         return;
       }
-      signIn(email.value);
+      signInWithPassword(email.value, password.value);
     }
   },
   { debounce: 500 }
 );
+
+const loginPasswordHandler = async () => {
+  loading.value = true;
+  try {
+    await signInWithPassword(email.value, password.value);
+  } catch (e) {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: e,
+      life: 2000,
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+const loginPasskeyHandler = async () => {
+  loading.value = true;
+  try {
+    await signInWithPasskey(email.value);
+  } catch (e) {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: e,
+      life: 2000,
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+const signUpHandler = async () => {
+  loading.value = true;
+  try {
+    await signUp(email.value, password.value, confirmPassword.value!);
+  } catch (e) {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: e,
+      life: 2000,
+    });
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -81,10 +129,7 @@ watchDebounced(
             type="email"
           />
         </div>
-        <div
-          v-if="register"
-          class="flex justify-between items-center gap-3 mb-5"
-        >
+        <div class="flex justify-between items-center gap-3 mb-5">
           <label for="password" class="font-semibold w-6rem">Password</label>
           <Password
             v-model="password"
@@ -124,27 +169,22 @@ watchDebounced(
             type="button"
             label="Sign Up"
             :loading
-            @click="
-              async () => {
-                loading = true;
-                await signUp(email, password, confirmPassword!);
-                loading = false;
-              }
-            "
+            @click="signUpHandler"
           />
-          <Button
-            v-else
-            type="button"
-            label="Sign In"
-            :loading
-            @click="
-              async () => {
-                loading = true;
-                await signIn(email);
-                loading = false;
-              }
-            "
-          />
+          <div v-else class="flex gap-2">
+            <Button
+              type="button"
+              label="Passkey"
+              :loading
+              @click="loginPasskeyHandler"
+            />
+            <Button
+              type="button"
+              label="Sign In"
+              :loading
+              @click="loginPasswordHandler"
+            />
+          </div>
         </div>
       </form>
     </template>

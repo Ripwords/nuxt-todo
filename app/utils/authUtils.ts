@@ -1,4 +1,4 @@
-const { register, authenticate } = useWebAuthn({
+const { authenticate } = useWebAuthn({
   registerEndpoint: "/api/webauthn/register", // Default
   authenticateEndpoint: "/api/webauthn/authenticate", // Default
 });
@@ -6,6 +6,10 @@ const { register, authenticate } = useWebAuthn({
 const { register: registerExisting } = useWebAuthn({
   registerEndpoint: "/api/webauthn/register-existing",
 });
+
+export const registerExistingUser = async (email: string) => {
+  await registerExisting({ userName: email });
+};
 
 export const signUp = async (
   email: string,
@@ -17,10 +21,13 @@ export const signUp = async (
   const { fetch } = useUserSession();
 
   try {
-    await register({
-      userName: email,
-      password,
-      confirmPassword,
+    await $fetch("/api/auth/signup", {
+      method: "POST",
+      body: {
+        email,
+        password,
+        confirmPassword,
+      },
     });
     await fetch();
 
@@ -42,7 +49,30 @@ export const signUp = async (
   }
 };
 
-export const signIn = async (email: string) => {
+export const signInWithPassword = async (email: string, password: string) => {
+  const toast = usePvToast();
+  const router = useRouter();
+  const { fetch } = useUserSession();
+
+  try {
+    await $fetch("/api/auth/signin", {
+      method: "POST",
+      body: { email, password },
+    });
+    await fetch();
+
+    router.push("/");
+  } catch (e) {
+    toast.add({
+      life: 3000,
+      summary: "Error",
+      detail: e,
+      severity: "error",
+    });
+  }
+};
+
+export const signInWithPasskey = async (email: string) => {
   const toast = usePvToast();
   const router = useRouter();
   const { fetch } = useUserSession();
@@ -53,32 +83,12 @@ export const signIn = async (email: string) => {
 
     router.push("/");
   } catch (e: any) {
-    if (e.statusCode === 400 && e.data.message === "Credential not found") {
-      try {
-        await registerExisting({
-          userName: email,
-        });
-        await fetch();
-      } catch (e: any) {
-        toast.add({
-          life: 3000,
-          summary: "Error",
-          detail: e,
-          severity: "error",
-        });
-      }
-
-      await fetch();
-      router.push("/");
-    }
-
     toast.add({
       life: 3000,
-      summary: "User not found",
-      detail: "Please sign up",
+      summary: "Credentials not found",
+      detail: "Please sign up or register your passkey",
       severity: "error",
     });
-    router.push("/auth/signup");
   }
 };
 
