@@ -7,14 +7,8 @@ export default defineWebAuthnRegisterEventHandler({
   }).parse,
   async onSuccess(event, { credential, user }) {
     const credDb = useStorage("mongo:credentials");
-    if ((await userExists(user.userName, "credentials")) !== undefined) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: "User already exists",
-      });
-    }
 
-    const userData = await userExists(user.userName, "auth");
+    const userData = await userExists(user.userName);
     if (!userData) {
       throw createError({
         statusCode: 400,
@@ -22,7 +16,9 @@ export default defineWebAuthnRegisterEventHandler({
       });
     }
 
-    const existingCredential = await userExists(user.userName, "credentials");
+    const existingCredential = await credDb.getItem<CredentialData>(
+      user.userName
+    );
     if (existingCredential) {
       throw createError({
         statusCode: 400,
@@ -43,8 +39,22 @@ export default defineWebAuthnRegisterEventHandler({
       user: {
         uuid: userData.uuid,
         email: user.userName,
+        webauthn: true,
       },
       loggedInAt: new Date(),
     });
+  },
+  async excludeCredentials(event, userName) {
+    const credDb = useStorage("mongo:credentials");
+    const user = await credDb.getItem<CredentialData>(userName);
+    if (!user) {
+      return [];
+    }
+    return [
+      {
+        id: user.id,
+        transports: JSON.parse(user.transports),
+      },
+    ];
   },
 });

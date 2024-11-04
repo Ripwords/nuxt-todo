@@ -3,7 +3,7 @@ import type { CredentialData } from "#auth-utils";
 export default defineWebAuthnAuthenticateEventHandler({
   async allowCredentials(event, userName) {
     const credDb = useStorage("mongo:credentials");
-    const userData = await userExists(userName, "auth");
+    const userData = await userExists(userName);
     const user = await credDb.getItem<CredentialData>(userName);
     if (!user && userData) {
       throw createError({ statusCode: 400, message: "Credential not found" });
@@ -51,7 +51,7 @@ export default defineWebAuthnAuthenticateEventHandler({
       throw createError({ statusCode: 400, message: "Credential not found" });
     }
 
-    const userData = await userExists(userEmail, "auth");
+    const userData = await userExists(userEmail);
 
     if (!userData) {
       throw createError({ statusCode: 400, message: "User not found" });
@@ -66,6 +66,7 @@ export default defineWebAuthnAuthenticateEventHandler({
       user: {
         uuid: userData.uuid,
         email: userEmail,
+        webauthn: true,
       },
       loggedInAt: new Date(),
     });

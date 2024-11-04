@@ -8,7 +8,12 @@ const { register: registerExisting } = useWebAuthn({
 });
 
 export const registerExistingUser = async (email: string) => {
-  await registerExisting({ userName: email });
+  const { loggedIn } = useUserSession();
+  if (loggedIn.value) {
+    await registerExisting({ userName: email });
+  } else {
+    throw new Error("User is not logged in");
+  }
 };
 
 export const signUp = async (
@@ -45,7 +50,6 @@ export const signUp = async (
       detail: e,
       severity: "error",
     });
-    router.push("/");
   }
 };
 
@@ -82,7 +86,7 @@ export const signInWithPasskey = async (email: string) => {
     await fetch();
 
     router.push("/");
-  } catch (e: any) {
+  } catch {
     toast.add({
       life: 3000,
       summary: "Credentials not found",

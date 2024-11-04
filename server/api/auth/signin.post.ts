@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse);
   // Check if email exists in database
   const userData = await userExists(body.email, "auth");
+  const webauthn = await useStorage("mongo:credentials").getItem(body.email);
   if (!userData) {
     setResponseStatus(event, 401);
     return {
@@ -43,6 +44,7 @@ export default defineEventHandler(async (event) => {
     user: {
       uuid: userData.uuid,
       email: body.email,
+      webauthn: webauthn ? true : false,
     },
     loggedInAt: new Date(),
   });

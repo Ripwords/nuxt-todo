@@ -4,6 +4,7 @@ declare module "#auth-utils" {
     // Add your own fields
     uuid: string;
     email: string;
+    webauthn?: boolean;
   }
 
   interface UserSession {

@@ -1,12 +1,9 @@
 import type { UserData, UserStoredData } from "#auth-utils";
 
-type DBName = "auth" | "credentials";
-
 export const userExists = async (
-  email: string,
-  dbName: DBName
+  email: string
 ): Promise<UserData | undefined> => {
-  const db = useStorage(`mongo:${dbName}`);
+  const db = useStorage("mongo:auth");
   const uuids = await db.getKeys();
   let userData: UserData | undefined;
   for (const uuid of uuids) {

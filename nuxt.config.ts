@@ -58,6 +58,10 @@ export default defineNuxtConfig({
           driver: "fs",
           base: "./db/credentials",
         },
+        ["mongo:challenges"]: {
+          driver: "fs",
+          base: "./db/challenges",
+        },
       },
     },
   },
@@ -81,6 +85,12 @@ export default defineNuxtConfig({
           driver: "mongodb",
           connectionString: process.env.MONGODB_URI,
           collectionName: "credentials",
+          databaseName: "nuxt_todo",
+        },
+        ["mongo:challenges"]: {
+          driver: "mongodb",
+          connectionString: process.env.MONGODB_URI,
+          collectionName: "challenges",
           databaseName: "nuxt_todo",
         },
       },

@@ -2,6 +2,8 @@
 definePageMeta({
   middleware: ["auth"],
 });
+
+const { user, fetch } = useUserSession();
 </script>
 
 <template>
@@ -12,6 +14,17 @@ definePageMeta({
           <template #start>Todos</template>
           <template #end>
             <div class="flex items-center gap-2">
+              <Button
+                v-if="!user?.webauthn"
+                type="button"
+                label="Register Passkey"
+                @click="
+                  async () => {
+                    await registerExistingUser(user?.email);
+                    await fetch();
+                  }
+                "
+              />
               <Button type="button" label="ME" @click="me" />
               <Button type="button" label="Sign Out" @click="signOut" />
             </div>
